@@ -1,0 +1,70 @@
+name: CI/CD for Machine Learning Model
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # ==================================
+  # A. CONTINUOUS INTEGRATION (CI) Job
+  # ==================================
+  build-and-test:
+    name: Build & Test (CI)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Linting (Flake8)
+        run: flake8 src --count --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Run Tests (pytest)
+        run: pytest tests/test_model.py
+
+  # ----------------------------------
+  # B. CONTINUOUS DEPLOYMENT (CD) Job
+  # ----------------------------------
+  train-and-deploy:
+    name: Train & Deploy (CD)
+    runs-on: ubuntu-latest
+    needs: build-and-test # **CD hanya akan berjalan jika CI berhasil**
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Retrain Machine Learning Model
+        # Ini menjalankan src/model.py train yang akan mencetak akurasi
+        run: python src/model.py train
+
+      - name: Mock Model Deployment/Registration
+        run: |
+          echo "Simulasi deployment/registrasi model baru..."
+          # Menggunakan GitHub CLI untuk "deployment" sederhana
+          echo "New_Model_ID: $(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+      
+      - name: Display Deployment Status
+        run: echo "✅ Deployment/Registrasi Model Selesai. ID Model Baru: ${{ env.New_Model_ID }}"

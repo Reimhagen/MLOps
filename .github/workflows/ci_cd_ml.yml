@@ -64,7 +64,8 @@ jobs:
         run: |
           echo "Simulasi deployment/registrasi model baru..."
           # Menggunakan GitHub CLI untuk "deployment" sederhana
-          echo "New_Model_ID: $(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
+          echo "NEW_MODEL_ID=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
       
       - name: Display Deployment Status
-        run: echo "✅ Deployment/Registrasi Model Selesai. ID Model Baru:${{ env.New_Model_ID }}"
+        run: |
+          echo "✅ Deployment/Registrasi Model Selesai. ID Model Baru: $NEW_MODEL_ID"

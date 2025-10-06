@@ -32,8 +32,8 @@ jobs:
       - name: Run Linting (Flake8)
         run: flake8 src --count --max-complexity=10 --max-line-length=127 --statistics
 
-      - name: Run Tests (pytest)
-        run: pytest tests/test_model.py
+      - name: Run Test (pytest)
+        run: pytest test/test_model.py
 
   # ----------------------------------
   # B. CONTINUOUS DEPLOYMENT (CD) Job

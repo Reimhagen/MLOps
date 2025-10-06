@@ -1,7 +1,6 @@
 import sys
 import time
 
-
 def train_model():
     """Simulasi pelatihan model."""
 

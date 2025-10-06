@@ -1,0 +1,6 @@
+# Dependensi utama untuk model
+# (Dalam kasus nyata, ini berisi numpy, pandas, scikit-learn, dll.)
+
+# Dependensi untuk CI/CD (linting dan testing)
+flake8
+pytest
